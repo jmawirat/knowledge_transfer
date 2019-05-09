@@ -3,7 +3,7 @@ import time
 import re
 from slackclient import SlackClient
 
-slack_client = SlackClient('<API KEY>'')
+slack_client = SlackClient('xoxb-446465326693-619141708722-KddJvAgGKYrVzfK95UUbTRKj')
 starterbot_id = None
 
 # constants
@@ -26,7 +26,24 @@ def handle_command(command, channel):
     # Required Variables
     # command
     # response
+    response = ""
+    if "running-config" in command:
+        response = "May I clarify which device it is?"
+    else:
+        response = "Sorry Master I do not know what you mean"
 
+    device_config = {
+            "LPCDH-01" : "switchport mode access",
+            "LPCDH-02" : "switchport mode trunk"
+    }  
+
+    if "LPCDH-01" in command:
+        response = device_config["LPCDH-01"]
+    elif "LPCDH-02" in command:
+        response = device_config["LPCDH-02"]
+    else:
+        response = "Master there is no device like that"
+    
     slack_client.api_call(
         "chat.postMessage",
         channel=channel,
